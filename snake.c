@@ -24,7 +24,6 @@
 
 void gen_apple();
 
-
 typedef struct {
 	int h;
 	int w;
@@ -32,7 +31,6 @@ typedef struct {
 
 } Win;
 Win win;
-
 
 typedef struct {
 
@@ -43,7 +41,6 @@ typedef struct {
 
 } Image;
 Image logo;
-
 
 enum {
     SNAKE_UP,
@@ -87,7 +84,6 @@ typedef struct snake Snake;
 
 Snake *head;
 Snake *tail;
-
 
 Snake *g_head;
 Snake *g_tail;
@@ -156,7 +152,6 @@ void SDL_RenderFillCircle(SDL_Renderer *renderer, int x, int y, int radius, SDL_
     }
 }
 
-
 void init_snake()
 {
     Snake *new = malloc(sizeof(Snake));
@@ -167,7 +162,6 @@ void init_snake()
     
     head = new;
     tail = new;
-
 
     return;
 }
@@ -252,10 +246,8 @@ void move_snake()
 
     }
 
-
     return;
 }
-
 
 void reset_snake()
 {
@@ -284,14 +276,11 @@ void reset_snake()
 
     gen_apple();
 
-
-
     return;
 }
 
 void render_ghost(SDL_Renderer *renderer, int x, int y)
 {
-
 
     int seg_size = win.gd / GRID_SIZE;
     SDL_Rect seg;
@@ -343,7 +332,6 @@ void render_ghost(SDL_Renderer *renderer, int x, int y)
 void render_snake(SDL_Renderer *renderer, int x, int y)
 {
 
-
     int seg_size = win.gd / GRID_SIZE;
     SDL_Rect seg;
     seg.w = seg_size - 2;
@@ -393,8 +381,6 @@ void render_snake(SDL_Renderer *renderer, int x, int y)
 
 void flash_snake(SDL_Renderer *renderer, int x, int y)
 {
-
-
     int seg_size = win.gd / GRID_SIZE;
     SDL_Rect seg;
     seg.w = seg_size - 2;
@@ -446,11 +432,7 @@ void flash_snake(SDL_Renderer *renderer, int x, int y)
                 b_dir = 0;
             }
         }
-
-
-
     }
-
 
     return;
 }
@@ -461,14 +443,9 @@ void render_grid(SDL_Renderer *renderer, int x, int y)
 
     int cell_size = win.gd / GRID_SIZE;
 #if 1
-
-
-
     SDL_Rect cell;
     cell.w = cell_size;
     cell.h = cell_size;
-
-
 
     for(int i = 0; i < GRID_SIZE; i++) {
         for(int j = 0; j < GRID_SIZE; j++) {
@@ -486,16 +463,10 @@ void render_grid(SDL_Renderer *renderer, int x, int y)
     outline.w = cell_size * GRID_SIZE;
     outline.h = cell_size * GRID_SIZE;
     SDL_RenderDrawRect(renderer, &outline);
-
-
-
 #else
 #define m 333
 
     for(int i = 0; i < 15; i++) {
-
-
-
 
         //SDL_SetRenderDrawColor(renderer, 255 - i * m, 255 - i * m, 255 - i * m, 255 - i);
         SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 255 - i * m, 255 - i);
@@ -516,16 +487,13 @@ void render_grid(SDL_Renderer *renderer, int x, int y)
     outline.w = cell_size * GRID_SIZE;
     outline.h = cell_size * GRID_SIZE;
     SDL_RenderDrawRect(renderer, &outline);
-
-
 #endif
+
     return;
 }
 
-
 void gen_apple()
 {
-
     bool in_snake;
 
     do {
@@ -545,7 +513,6 @@ void gen_apple()
     }
     while(in_snake);
 
-
     Apple.score++;
 
     return;
@@ -553,7 +520,6 @@ void gen_apple()
 
 void render_apple(SDL_Renderer *renderer, int x, int y)
 {
-
     SDL_SetRenderDrawColor(renderer, 0x55, 0x00, 0x00, 255);
 
     int apple_size = win.gd / GRID_SIZE;
@@ -596,7 +562,6 @@ void detect_crash()
         }
         track = track->next;
     }
-
 
     return;
 }
@@ -653,7 +618,6 @@ int future_state(int try, int x, int y, int dir)
 
     int try_x = x;
     int try_y = y;
-
 
     switch(dir) {
         case SNAKE_UP:
@@ -744,7 +708,6 @@ int future_state(int try, int x, int y, int dir)
         }
     }
 
-
     //DETECT TAIL
     if(Data.reward_tail_crash == true) {
 
@@ -762,9 +725,7 @@ int future_state(int try, int x, int y, int dir)
         }
     }
 
-
-    //DETECT GHOST TAIL
-    
+    //DETECT GHOST TAIL    
     Snake *track = g_head;
     if(track->next != NULL) {
         track = track->next;
@@ -845,7 +806,6 @@ int state(int try, SDL_Renderer *renderer, int x, int y)
     int try_x = head->x;
     int try_y = head->y;
 
-
     switch(head->dir) {
         case SNAKE_UP:
             switch(try) {
@@ -934,7 +894,6 @@ int state(int try, SDL_Renderer *renderer, int x, int y)
         }
     }
 
-
     //DETECT TAIL
     if(Data.reward_tail_crash == true) {
 
@@ -960,16 +919,8 @@ int state(int try, SDL_Renderer *renderer, int x, int y)
         reward += -40;
     }
 
-
-
     //DETECT FUTURE
-
     int dir = change_dir(try, head->dir);
-
-
-
-
-
     init_ghost(try_x, try_y, dir);
 
     bool still_alive = true;
@@ -1086,9 +1037,6 @@ int state(int try, SDL_Renderer *renderer, int x, int y)
                         break;
                 }
             }
-
-
-
         }
 
         Snake *track = head;
@@ -1101,7 +1049,6 @@ int state(int try, SDL_Renderer *renderer, int x, int y)
                 }
                 track2 = track2->next;
             }
-
 
             /*
             if(try_x == track->x && try_y == track->y) {
@@ -1121,24 +1068,14 @@ int state(int try, SDL_Renderer *renderer, int x, int y)
         }
 */
 
-
         increase_ghost(try_x, try_y);
 
     }
-
-
-
-
-
-
-
-
 
     if(!still_alive) {
         reward += - 6;
         //printf("futureDead");
     }
-
 
     render_ghost(renderer, x, y);
 
@@ -1163,7 +1100,6 @@ void ai(SDL_Renderer *renderer, int x, int y)
         else {
             turn_right();
         }
-
     }
 
     Data.f = try_f;
@@ -1261,6 +1197,7 @@ void render_title(SDL_Renderer *renderer, int x, int y)
 
     return;
 }
+
 void render_sub_title(SDL_Renderer *renderer, int x, int y)
 {
     SDL_SetRenderDrawColor(renderer, 0x55, 0x99, 0xFF, 255);
@@ -1300,7 +1237,7 @@ void render_spec(SDL_Renderer *renderer, int x, int y)
     cell.w = cell_size - 0;
     cell.h = cell_size - 0.5;
 
-    char buff[20] = {'C',':','S','D','L','2',':','Q','-','L','E','A','R','N','I','N','G',' '};
+    char buff[20] = {'C',':','S','D','L','2',':','Q','-','F','U','T','U','R','E','.','.',' '};
 
     //snprintf(buff, sizeof(buff), "%s", "Snake");
 
@@ -1319,14 +1256,8 @@ void render_spec(SDL_Renderer *renderer, int x, int y)
     return;
 }
 
-
 void render_arrow(SDL_Renderer *renderer, int x, int y)
 {
-
-
-
-
-
     int cell_size = 31;
 
     int off = 14;
@@ -1338,7 +1269,6 @@ void render_arrow(SDL_Renderer *renderer, int x, int y)
     char buff[10];
     snprintf(buff, sizeof(buff), "%4d", head->dir);
 */
-
 
     SDL_SetRenderDrawColor(renderer, 0x00, 0xFF, 0x00, 25);
     SDL_Rect out;
@@ -1370,31 +1300,19 @@ void render_arrow(SDL_Renderer *renderer, int x, int y)
                 if(glyphs[buff][j][i]) {
 
                     SDL_SetRenderDrawColor(renderer, 0x00, 0xFF, 0x00, 25);
-
-
-
-
                     cell.x = x + cell_size * i + (cell_size * 9 * k) + off / 2;
                     cell.y = y + cell_size * j + off / 2;
                     SDL_RenderFillRect(renderer, &cell);
-
                     SDL_SetRenderDrawColor(renderer, 0x00, 0xFF, 0x00, 255);
-
                     SDL_RenderDrawRect(renderer, &cell);
-
-
                 }
                 else {
-
                     SDL_SetRenderDrawColor(renderer, 0x11, 0x11, 0x11, 255);
-
                     cell.x = x + cell_size * i + (cell_size * 9 * k) + off/2;
                     cell.y = y + cell_size * j + off / 2;
                     SDL_RenderFillRect(renderer, &cell);
-
                     SDL_SetRenderDrawColor(renderer, 0x11, 0x11, 0x11, 155);
                     SDL_RenderDrawRect(renderer, &cell);
-
                 }
             }
         }
@@ -1402,8 +1320,6 @@ void render_arrow(SDL_Renderer *renderer, int x, int y)
 
     return;
 }
-
-
 
 void render_score_label(SDL_Renderer *renderer, int x, int y)
 {
@@ -1560,7 +1476,6 @@ void render_left_label(SDL_Renderer *renderer, int x, int y)
 
 void render_left_val(SDL_Renderer *renderer, int x, int y)
 {
-
     SDL_SetRenderDrawColor(renderer, 0x55, 0x99, 0xFF, 255);
 
     int cell_size = 3;
@@ -1621,7 +1536,6 @@ void render_right_label(SDL_Renderer *renderer, int x, int y)
     return;
 }
 
-
 void render_right_val(SDL_Renderer *renderer, int x, int y)
 {
 
@@ -1655,10 +1569,8 @@ void render_right_val(SDL_Renderer *renderer, int x, int y)
     return;
 }
 
-
 void render_toggle_pause(SDL_Renderer *renderer, int x, int y)
 {
-
     SDL_SetRenderDrawColor(renderer, 0x55, 0x99, 0xFF, 255);
 
     int cell_size = 3;
@@ -1688,7 +1600,6 @@ void render_toggle_pause(SDL_Renderer *renderer, int x, int y)
 
 void render_toggle_reset(SDL_Renderer *renderer, int x, int y)
 {
-
     SDL_SetRenderDrawColor(renderer, 0x55, 0x99, 0xFF, 255);
 
     int cell_size = 3;
@@ -1718,7 +1629,6 @@ void render_toggle_reset(SDL_Renderer *renderer, int x, int y)
 
 void render_toggle_walls(SDL_Renderer *renderer, int x, int y)
 {
-
     SDL_SetRenderDrawColor(renderer, 0x55, 0x99, 0xFF, 255);
 
     int cell_size = 3;
@@ -1748,7 +1658,6 @@ void render_toggle_walls(SDL_Renderer *renderer, int x, int y)
 
 void render_toggle_apple(SDL_Renderer *renderer, int x, int y)
 {
-
     SDL_SetRenderDrawColor(renderer, 0x55, 0x99, 0xFF, 255);
 
     int cell_size = 3;
@@ -1778,7 +1687,6 @@ void render_toggle_apple(SDL_Renderer *renderer, int x, int y)
 
 void render_toggle_move(SDL_Renderer *renderer, int x, int y)
 {
-
     SDL_SetRenderDrawColor(renderer, 0x55, 0x99, 0xFF, 255);
 
     int cell_size = 3;
@@ -1838,8 +1746,6 @@ void render_toggle_tail(SDL_Renderer *renderer, int x, int y)
 
 void render_toggle_walls_check(SDL_Renderer *renderer, int x, int y )
 {
-
-
     SDL_SetRenderDrawColor(renderer, 0x55, 0x99, 0xFF, 255);
     SDL_Rect check;
     check.w = 20;
@@ -1860,8 +1766,6 @@ void render_toggle_walls_check(SDL_Renderer *renderer, int x, int y )
 
 void render_toggle_apple_check(SDL_Renderer *renderer, int x, int y )
 {
-
-
     SDL_SetRenderDrawColor(renderer, 0x55, 0x99, 0xFF, 255);
     SDL_Rect check;
     check.w = 20;
@@ -1882,8 +1786,6 @@ void render_toggle_apple_check(SDL_Renderer *renderer, int x, int y )
 
 void render_toggle_move_check(SDL_Renderer *renderer, int x, int y )
 {
-
-
     SDL_SetRenderDrawColor(renderer, 0x55, 0x99, 0xFF, 255);
     SDL_Rect check;
     check.w = 20;
@@ -1904,8 +1806,6 @@ void render_toggle_move_check(SDL_Renderer *renderer, int x, int y )
 
 void render_toggle_tail_check(SDL_Renderer *renderer, int x, int y )
 {
-
-
     SDL_SetRenderDrawColor(renderer, 0x55, 0x99, 0xFF, 255);
     SDL_Rect check;
     check.w = 20;
@@ -1951,9 +1851,9 @@ void render_logo(SDL_Renderer *renderer, int x, int y)
     int r = 40;
     SDL_RenderFillCircle(renderer, x, y, r, c);
 
-    c.r = 0x09;
-    c.g = 0x09;
-    c.b = 0x09;
+    c.r = 0x00;
+    c.g = 0x00;
+    c.b = 0x00;
     c.a = 255;
 
     r = 30;
@@ -1975,9 +1875,6 @@ void render_logo(SDL_Renderer *renderer, int x, int y)
     r = 22;
     SDL_RenderFillCircle(renderer, x, y, r, c);
 
-
-
-
     SDL_RenderFillCircle(renderer, x, y, r, c);
 
     rect.w = 20;
@@ -1997,8 +1894,7 @@ void render_logo(SDL_Renderer *renderer, int x, int y)
 }
 
 int main()
-{
-	
+{	
     srand(time(0));
 
     init_snake();
@@ -2009,19 +1905,14 @@ int main()
     gen_apple();
     Apple.score = 0;
 
-
     Data.paused = false;
     Data.reward_wall_crash = true;
     Data.reward_apple = true;
     Data.reward_move_to_apple = true;
     Data.reward_tail_crash = true;
 
-
-
-
     SDL_Window *window;
     SDL_Renderer *renderer;
-
 
     if(SDL_INIT_VIDEO < 0) {
         fprintf(stderr, "ERROR: SDL_INIT_VIDEO");
@@ -2044,10 +1935,6 @@ int main()
     if(!window) {
         fprintf(stderr, "ERROR: !window");
     }
-
-
-
-
     
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
@@ -2058,18 +1945,12 @@ int main()
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	SDL_GetRendererOutputSize(renderer, &win.w, &win.h);
 
-
-
-
     int grid_x = (win.w / 2) - (win.gd / 2);
     int grid_y = (win.h / 2) - (win.gd / 2);
 
     int flash = 0;
     bool quit = false;
     SDL_Event event;
-
-
-
 
     while(!quit) {
         while(SDL_PollEvent(&event)) {
@@ -2085,8 +1966,6 @@ int main()
 			else {
 				win.gd = win.w - 300;
 			}
-
-
             switch(event.type) {
     		case SDL_QUIT:
                     quit = true;
@@ -2125,7 +2004,6 @@ int main()
                         case SDLK_w:
                             if(Data.reward_wall_crash == false) {
                                 Data.reward_wall_crash = true;
-
                             }
                             else {
                                 Data.reward_wall_crash = false;
@@ -2135,32 +2013,26 @@ int main()
                         case SDLK_m:
                             if(Data.reward_move_to_apple == false) {
                                 Data.reward_move_to_apple = true;
-
                             }
                             else {
                                 Data.reward_move_to_apple = false;
                             }
-
                             break;
                         case SDLK_t:
                             if(Data.reward_tail_crash == false) {
                                 Data.reward_tail_crash = true;
-
                             }
                             else {
                                 Data.reward_tail_crash = false;
                             }
-
                             break;
                         case SDLK_a:
                             if(Data.reward_apple == false) {
                                 Data.reward_apple = true;
-
                             }
                             else {
                                 Data.reward_apple = false;
                             }
-
                             break;
                     }
                     break;
@@ -2171,16 +2043,12 @@ int main()
         //RENDER LOOP START
 
         if(Data.paused == false) {
-        move_snake();
-        detect_apple();
-        detect_crash();
+            move_snake();
+            detect_apple();
+            detect_crash();
         }
-
-
-
         render_grid(renderer, grid_x, grid_y);
         render_snake(renderer, grid_x, grid_y);
-
 
         if(Apple.score % 10 == 0 && Apple.score != 0 ) {
             flash = 10;
@@ -2191,8 +2059,6 @@ int main()
         }
 
         render_apple(renderer, grid_x, grid_y);
-
-
         render_score(renderer, win.w - 500, 25);
         render_top_score(renderer, win.w - 500, 85);
         render_title(renderer,20, 20);
@@ -2229,33 +2095,21 @@ int main()
         render_toggle_tail(renderer, win.w - 320, 900 );
         render_toggle_tail_check(renderer, win.w - 50, 900 );
 
-
-        render_logo(renderer, win.w / 2  , win.h - 80);
-
-
+        //render_logo(renderer, win.w / 2  , win.h - 80);
         ai(renderer, grid_x, grid_y);
 
         //RENDER LOOP END
         //SDL_SetRenderDrawColor(renderer, 0xe5, 0xe5,0xe5, 255);
         SDL_SetRenderDrawColor(renderer, 0x00, 0x00,0x00, 255);
         SDL_RenderPresent(renderer);
-
         
         SDL_Delay(DELAY);
 
     }
 
-
-
-
-
-
-
-
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
-
 
     return 0;
 }
