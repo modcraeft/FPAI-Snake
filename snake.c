@@ -1,31 +1,26 @@
 #include "snake.h"
 #include "glyphs.h"
 
-#if 0
+//#define STREAM
+
+#ifdef STREAM
+//STREAM
+#define WINDOW_WIDTH 1775
+#define WINDOW_HEIGHT 1375
+#define WINDOW_X 7
+#define WINDOW_Y 850
+#else
 //FULLSCREEN
 #define WINDOW_X 0
 #define WINDOW_Y -20
 #define WINDOW_WIDTH 2560
 #define WINDOW_HEIGHT 1406
-
-#else
-//STREAM
-/*
-#define WINDOW_WIDTH 1770
-#define WINDOW_HEIGHT 1405
-#define WINDOW_X 10
-#define WINDOW_Y -20
-*/
-#define WINDOW_X 34
-#define WINDOW_Y 820
-#define WINDOW_WIDTH 1766
-#define WINDOW_HEIGHT 1405
 #endif
 
 #define GRID_SIZE 56
 #define GRID_DIM 1100
 
-#define DELAY 10
+#define DELAY 0
 
 void gen_apple();
 
@@ -280,11 +275,16 @@ void reset_snake()
 
     if(Apple.score > Apple.top_score) {
         Apple.top_score = Apple.score;
+
+		printf("\nLOG: New Top Score: %d", Apple.top_score);
+		fflush(stdout);
     }
 
     Apple.score = 0;
 
     gen_apple();
+
+
 
     return;
 }
@@ -2033,7 +2033,12 @@ int main()
         WINDOW_Y,
         WINDOW_WIDTH,
         WINDOW_HEIGHT,
+#ifdef STREAM
+        SDL_WINDOW_BORDERLESS
+#else
         SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI
+#endif
+
     );
     
     if(!window) {
@@ -2232,7 +2237,7 @@ int main()
 
         //RENDER LOOP END
         //SDL_SetRenderDrawColor(renderer, 0xe5, 0xe5,0xe5, 255);
-        SDL_SetRenderDrawColor(renderer, 0x09, 0x09,0x09, 255);
+        SDL_SetRenderDrawColor(renderer, 0x00, 0x00,0x00, 255);
         SDL_RenderPresent(renderer);
 
         
